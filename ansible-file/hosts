@@ -42,6 +42,6 @@ master.wisa.mylab
 
 # host group for nodes, includes region info
 [nodes]
-master.wisa.mylab
-worker1.wisa.mylab openshift_node_labels="{'region': 'primary', 'zone': 'default'}"
-infra1.wisa.mylab openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
+master.wisa.mylab openshift_node_group_name='node-config-master'
+worker1.wisa.mylab openshift_node_group_name='node-config-compute'
+infra1.wisa.mylab openshift_node_group_name='node-config-infra'
