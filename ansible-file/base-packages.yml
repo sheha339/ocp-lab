@@ -1,0 +1,22 @@
+---
+- name: Installing base packages for OCP deployment
+  hosts: all
+  become: yes
+  tasks:
+
+  - name: Install packages
+    yum:
+      name: 
+        - wget
+        - git 
+        - net-tools 
+        - bind-utils 
+        - yum-utils 
+        - iptables-services 
+        - bridge-utils 
+        - bash-completion 
+        - kexec-tools 
+        - sos 
+        - psacct
+        - openshift-ansible
+      state: latest
