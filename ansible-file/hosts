@@ -1,0 +1,47 @@
+# Create an OSEv3 group that contains the master, nodes, etcd, and lb groups.
+# The lb group lets Ansible configure HAProxy as the load balancing solution.
+# Comment lb out if your load balancer is pre-configured.
+[OSEv3:children]
+masters
+nodes
+etcd
+
+# Set variables common for all OSEv3 hosts
+[OSEv3:vars]
+ansible_ssh_user=root
+openshift_deployment_type=openshift-enterprise
+openshift_use_etcd_system_container=True
+openshift_disable_check=disk_availability,docker_storage,memory_availability,docker_image_availability
+
+# Uncomment the following to enable htpasswd authentication; defaults to
+# DenyAllPasswordIdentityProvider.
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/users.htpasswd'}]
+openshift_master_htpasswd_users={'admin': '$apr1$KpKl0ToV$iGOI7dL/7jjR2AlsaRXLb.', 'developer': '$apr1$AucR7bdp$Xk1UuDg2LLRKZ3lOPGyKO1'}
+
+# Native high availability cluster method with optional load balancer.
+# If no lb group is defined installer assumes that a load balancer has
+# been preconfigured. For installation the value of
+# openshift_master_cluster_hostname must resolve to the load balancer
+# or to one or all of the masters defined in the inventory if no load
+# balancer is present.
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=master.wisa.mylab
+openshift_master_cluster_public_hostname=master.wisa.mylab
+#
+#subdomain for apps
+openshift_master_default_subdomain=apps.wisa.mylab
+#
+# host group for masters
+[masters]
+master.wisa.mylab
+
+# host group for etcd
+[etcd]
+master.wisa.mylab
+
+
+# host group for nodes, includes region info
+[nodes]
+master.wisa.mylab
+worker1.wisa.mylab openshift_node_labels="{'region': 'primary', 'zone': 'default'}"
+infra1.wisa.mylab openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
