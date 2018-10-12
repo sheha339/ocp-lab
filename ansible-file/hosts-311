@@ -5,15 +5,15 @@
 masters
 nodes
 etcd
-lb
+#lb
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
 ansible_ssh_user=root
 openshift_deployment_type=openshift-enterprise
-deployment_subtype=registry
+#deployment_subtype=registry
 
-openshift_master_default_subdomain=apps.test.example.com
+openshift_master_default_subdomain=apps.wisa.mylab
 
 # Uncomment the following to enable htpasswd authentication; defaults to
 #enyAllPasswordIdentityProvider.
